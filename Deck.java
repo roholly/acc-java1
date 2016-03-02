@@ -1,5 +1,6 @@
 package edu.acc.java;
 
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -15,8 +16,7 @@ import java.util.Random;
 public class Deck extends PlayingCard {
 	
 	private PlayingCard[] deck = new PlayingCard[52];
-	// private int cardsPerPlayer = 5;
-	private PlayingCard card;
+
 	
 	public Deck() {
 		int i = 0;	
@@ -26,25 +26,47 @@ public class Deck extends PlayingCard {
 					i++;
 			}
 		}
-		System.out.println("The length of the deck array is:");
-		System.out.println(deck.length + "cards.");
+		System.out.println("The length of the deck array is:" + deck.length + " cards.");
 	}
 
 	public PlayingCard[] deal(int numCards) {
 		// Create PlayingCard (type) array called "Hand" of numCards length
-		// Randomly pull a PlayingCard out of deck and insert into Hand if unique
+		// Randomly pull a PlayingCard out of deck
+		// Make sure the PlayingCard pulled is unique to the Hand array.
+		// If unique, insert into Hand array
 		// Return full hand
+		
 		int handMax = numCards;
 		PlayingCard[] hand = new PlayingCard[handMax];
 		Random rand = new Random();
-		//this.card = deck[rand.nextInt(deck.length)];
+		for (int i = 0; i < handMax; i++) {
+			while (hand[i] == null) {
+				PlayingCard card = new PlayingCard();
+				card = deck[rand.nextInt(deck.length)];
+				if (isUnique(hand, card))  {
+					hand[i] = card;
+					}
+			}
+		}
+		return hand;			
 	}
 	
-		
-		
+	public Boolean isUnique(PlayingCard[ ] cardArray, PlayingCard drawnCard)  {
+		for (int i = 0; i < cardArray.length; i++)
+	      {
+	           if ( cardArray[i] == drawnCard )
+	                 return false;
+	      }
+	     return true;
+	}
+	
+			
 	
 	public static void main(String[] args) {
+		int max = 6;
 		Deck testDeck = new Deck();
+		PlayingCard[] drawnHand = testDeck.deal(max);
+		System.out.println("Hand drawn is " + Arrays.toString(drawnHand));
 		
 	}
 }
