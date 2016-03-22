@@ -1,0 +1,75 @@
+package edu.acc.java;
+import java.util.Random;
+
+public class PlayingCard implements PlayingCardIF {
+	
+	private Rank rank;
+	private Suit suit;
+	
+		
+	public PlayingCard(Rank r, Suit s) {
+		System.out.println("In PlayingCard(Rank r, Suit s) constructor.");
+		this.rank = r;
+		this.suit = s;
+		System.out.println("Just created a PlayingCard:  " + this.rank + " of " + this.suit);
+	}
+
+	public PlayingCard() {
+		// no rank or suit given so randomize a card
+		Random rand = new Random();
+		Rank[] rankArray = Rank.values();
+		Suit[] suitArray = Suit.values();
+		this.rank = rankArray[rand.nextInt(rankArray.length)];
+		this.suit = suitArray[rand.nextInt(suitArray.length)];
+		// One-liner way:
+		// this.rank = Rank.values()[rand.nextInt(Rank.values().length)];
+		
+		System.out.println("Just created a PlayingCard:  " + this.rank + " of " + this.suit);
+	}
+	
+
+	
+	@Override
+	// System.out.println(objectName) will reference this implicitly.
+	public String toString() {
+		return this.rank + " of " + this.suit;
+	}
+	
+	
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		// TODO check if obj is null
+		// check if obj is an instance of PlayingCard
+		// check if obj suit same as this suit
+		// check if obj rank same as this rank
+		
+		if (obj == null) { return false; }
+		if (!(obj instanceof PlayingCard)) { return false; }
+		Rank testRank = ((PlayingCard)obj).rank;
+		Suit testSuit = ((PlayingCard)obj).suit;
+		if ( testRank.equals(this.rank) && testSuit.equals(this.suit)) { return false; }
+		
+		return true;
+	}
+
+	public static void main(String[] args) {
+		PlayingCard cardOne = new PlayingCard(Rank.FOUR,Suit.CLUBS);
+		System.out.println(cardOne);
+		PlayingCard cardTwo = new PlayingCard();
+		System.out.println(cardTwo);
+		//for (Suit s: Suit.values()) {
+			//for (Rank r: Rank.values()) {
+				//System.out.println(r + " of " + s);
+			//}
+		//}
+		System.out.println(cardOne);
+		System.out.println(cardTwo);
+		System.out.println(cardOne.equals(cardTwo));
+			
+	}
+
+}
