@@ -10,7 +10,9 @@ public final class Lotto implements LottoIF {
 	private int maxBallNum = MAX_BALL_NUM;
 	private int years = YEARS;
 	
-	public void calc_odds(int numLottoBalls, int maxBallNum)  {
+	@Override
+
+	public void calc_odds()  {
 		long odds = 1;
 		int[] balls = new int[maxBallNum];
 		for (int i=0; i < maxBallNum; i++)  {
@@ -78,12 +80,14 @@ public final class Lotto implements LottoIF {
 		
 		Lotto lt = new Lotto();
 		lt.process_command_line(args);
-		lt.calc_odds(lt.numLottoBalls, lt.maxBallNum);
+		lt.calc_odds();
 		lt.testDrive = new LotteryDrawing(lt.numLottoBalls, lt.maxBallNum, lt.years);
 		lt.testDrive.run_simulation();
 		lt.print_results();
 			
 	}
+
+	
 	
 		
 		
