@@ -1,30 +1,36 @@
 package edu.acc.java;
 
-import java.util.Arrays;
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
 
-public class LotteryDrawing {
+public final class LotteryDrawing implements LotteryDrawingIF  {
 	
-	private int[] results = new int[6];
+	private int numLottoBalls;
+	private int maxBallNum;
+	private int numDrawings;
+	private int[] results;
+	private Random rand;
 	
-	public int getResults(int i) {
-		return this.results[i];
+	public int[] getResults() {
+		return results;
 	}
 
-	public void setResults(int i, int n) {
-		this.results[i] = n;
+		
+	public LotteryDrawing(int numLottoBalls, int maxBallNum, int years)  {
+		this.numLottoBalls = numLottoBalls;
+		this.maxBallNum = maxBallNum;
+		this.numDrawings = years*104;
+		results = new int[numLottoBalls + 1];
+		
+		rand = new Random();
 	}
 
-	private int[] pick_numbers(int numBalls)  {
-		int[] drawnNumbers = new int[numBalls];
-		// 54 is max and default for ball numbers -- command line argument
-		int maxBalls = 54;
-		Random rand = new Random();
-		for (int i=0; i < numBalls; i++)  {
+	public int[] pick_numbers()  {
+		int[] drawnNumbers = new int[numLottoBalls];
+		for (int i=0; i < numLottoBalls; i++)  {
 			while (drawnNumbers[i] == 0)  {
-				int ball = rand.nextInt(maxBalls) + 1;
+				int ball = rand.nextInt(maxBallNum) + 1;
 				if (isUnique(drawnNumbers, ball))  {
 					drawnNumbers[i] = ball;
 				}
@@ -43,27 +49,23 @@ public class LotteryDrawing {
 		return true;
 	}
 	
-	// numYears will be a command line argument -- overridden in this method?
-	public void run_simulation(int numYears)  {
+	public void run_simulation()  {
 		
-		int numDrawings = (numYears * 2);
 		int numMatches;
 		
 		for (int drawingRound = 0; drawingRound < numDrawings; drawingRound++)  {
 			
-			// 6 is default value for number of balls -- command line argument.
-			
 			//Define a winning list and put it in an ArrayList:
-			int[] winningNumbers = this.pick_numbers(6);
-			System.out.println(Arrays.toString(winningNumbers));
+			int[] winningNumbers = this.pick_numbers();
+			//System.out.println(Arrays.toString(winningNumbers));
 			List<Integer> winArrayList = new ArrayList<>();
 			for (int num:  winningNumbers)  {
 				winArrayList.add(num);
 			}
 			
 			//Define a quick pick list:
-			int[] quickPicks = this.pick_numbers(6);
-			System.out.println(Arrays.toString(quickPicks));
+			int[] quickPicks = this.pick_numbers();
+			//System.out.println(Arrays.toString(quickPicks));
 		
 			// Traverse through winArrayList to find number of matches from quickPicks
 			numMatches=0;
@@ -72,18 +74,12 @@ public class LotteryDrawing {
 					numMatches++;
 				}	
 			}
-			System.out.println("Adding 1 in results array to " + numMatches + " index.");
-			this.setResults(numMatches, this.getResults(numMatches+1));
+			results[numMatches]++;
+			//System.out.println("results index of " + numMatches + " is " + results[numMatches]);
 		}
 		
 	}
 	
-	public static void main(String[] args)  {
-		LotteryDrawing ld = new LotteryDrawing();
-		// 6 is default value for number of balls -- command line argument.
-		ld.run_simulation(5);
-		
-	}
 	
-
+		
 }
