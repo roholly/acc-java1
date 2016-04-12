@@ -35,11 +35,10 @@ public class UseBootstrapToTableHeaders extends HttpServlet {
 		out.println("<!DOCTYPE html>");
 		out.println("<head>");
 		out.println("<meta charset=\"utf-8\">");
-		out.print("<link rel=\"stylesheet\" href=\"css/bootstrap.min.css\">");
-		out.print("/head>");
-		out.print("<body>");
-		out.print("<div class=\"container\">");
-		out.print("<h2>Request Headers</h2>");
+		out.print("<link rel=\"stylesheet\" href=\"bootstrap-3.3.6-dist/css/bootstrap.min.css\">");
+		out.print("</head><body>");
+		// Next line not required to generate table:  Just makes "pretty."
+		out.print("<table class=\"table table-hover\">");
 		out.print("<thead>");
 		out.print("<tr>");
 		out.print("<th>Header Name</th><th>Value</th>");
@@ -48,19 +47,15 @@ public class UseBootstrapToTableHeaders extends HttpServlet {
 	    out.print("<tbody>");
 		Enumeration<String> headerNames = request.getHeaderNames();
 		while(headerNames.hasMoreElements())  {
-			String headerName = headerNames.nextElement();
-			out.print("<tr>");
-			out.print
-			
+			String key = headerNames.nextElement();
+			String val = request.getHeader(key);
+			out.print("<tr><td>" + key + "</td><td>" + val + "</td></tr>");			
 		}
-		
-		while(headerNames.hasMoreElements())  {
-			
-			out.print("Header Name: <em>" + headerName);
-			String headerValue = request.getHeader(headerName);
-			out.print("</em>, Header Value: <em>" + headerValue);
-			out.println("</em><br/>");
-		}
+		out.println("</tbody>");
+		out.println("</table>");
+		out.println("</body></html>");
+		out.close();
+
 	}
 
 	/**
